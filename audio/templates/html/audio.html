@@ -1,0 +1,15 @@
+<div id="${audio_id}" class="audio-xblock">
+  <audio preload="metadata" controls="controls">
+    Your browser does not support native <code>audio</code> capabilities!
+    % for (source, type) in sources:
+    % if type is None:
+    <source src="${source}" />
+    % else:
+    <source src="${source}" type="${type}" />
+    % endif
+    % endfor
+  </audio>
+  % if allow_audio_download and audio_download_url:
+  <div class="audio-xblock-download"><a href="${audio_download_url}">Download audio</a></div>
+  % endif
+</div>

@@ -1,0 +1,5 @@
+*~
+*.pyc
+/xblock_audio.egg-info
+/dist
+/templates
