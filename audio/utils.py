@@ -8,5 +8,7 @@ def get_path_mimetype(path):
         return "audio/opus"
     elif ipath.endswith((".ogg", ".oga")):
         return "audio/ogg"
+    elif ipath.endswith(".m4a"):
+        return "audio/mp4"
 
     return None

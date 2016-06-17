@@ -47,5 +47,9 @@ class AudioBlock(AudioFields, StudioEditableXBlockMixin, XBlock):
           'audio_download_url': audio_download_url
         }))
       fragment.add_css_url(self.runtime.local_resource_url(self, 'public/css/audio.css'))
+      fragment.add_css_url(self.runtime.local_resource_url(self, 'public/css/mediaelement.player.min.css'))
+      fragment.add_javascript_url(self.runtime.local_resource_url(self, 'public/js/mediaelement.player.min.js'))
+      fragment.add_javascript_url(self.runtime.local_resource_url(self, 'public/js/audio.js'))
+      fragment.initialize_js("AudioBlock")
 
       return fragment
