@@ -1,6 +1,6 @@
 # Audio XBlock
 
-A simple XBlock for playing audio files using the native HTML5 `<audio>` tag.
+A simple XBlock for playing audio files using [MediaElement.js](http://mediaelementjs.com/)
 
 # Features
 
