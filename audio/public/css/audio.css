@@ -1,3 +1,151 @@
-.audio-xblock audio {
+.audio-xblock {
   display: block;
+  margin-bottom: 4rem;
+}
+
+.mejs-container {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.mejs-container .mejs-controls {
+  position: relative !important;
+}
+
+.mejs-captions-layer .mejs-layer {
+  width: 100% !important;
+}
+
+.mejs-captions-layer .mejs-captions-text {
+  white-space: normal;
+  word-wrap: break-word;
+  max-width: 40ch;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 10px;
+  font-size: 18px;
+  line-height: 1.2;
+  text-align: center;
+  color: #000;
+  position: absolute;
+  transform: translateX(-50%);
+  top: 35px;
+  width: 100%;
+  left: 32rem;
+}
+
+.mejs-captions-position {
+  bottom: 50px;
+  left: 50% !important;
+  transform: translateX(-50%);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.mejs-controls .mejs-button > button {
+  background: url('/static/css/controls.svg') no-repeat;
+}
+
+.mejs-controls .mejs-time-rail {
+  width: 84% !important;
+}
+
+.mejs-time-slider {
+  width: 83% !important;
+}
+
+.mejs-time-total, .mejs-time-loaded, .mejs-time-current, .mejs-time-handle, .mejs-time-float {
+  max-width: 100% !important;
+}
+
+.tab-container {
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  height: calc(100% - 55px);
+  position: absolute;
+  overflow-y: scroll;
+  bottom: 0;
+  top: 0;
+}
+
+.tabcontent {
+  display: none;
+}
+
+.studio-xblock-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 25px;
+}
+
+.field label {
+  font-size: 14px;
+}
+
+.field input[type="file"],
+.field textarea {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.field input[type="text"] {
+  width: 20%;
+}
+
+.tab-container p {
+  font-size: small;
+}
+
+.field select {
+  width: 70px;
+}
+
+.save-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.save-button:hover {
+  background-color: #45a049;
+}
+
+.radio-container {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.radio-container label {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.radio-container input[type="radio"] {
+  margin-right: 8px;
+}
+
+.radio-group {
+  margin-bottom: 20px;
+}
+
+.bold-label {
+  font-weight: bold;
+}
+
+.time-fields {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
 }
