@@ -6,7 +6,7 @@ function AudioBlock(runtime, element) {
     }
 
     const startTime = parseFloat(audioElement.dataset.startTime) || 0;
-    const endTime = parseFloat(audioElement.dataset.endTime) || 0;
+    const endTime = parseFloat(audioElement.dataset.endTime) || audioElement.duration;
 
     $(audioElement).mediaelementplayer({
         features: ['playpause', 'progress', 'volume', 'tracks', 'fullscreen'],
