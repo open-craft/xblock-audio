@@ -3,8 +3,6 @@ import logging
 import pkg_resources
 import os
 from django.conf import settings
-from django.core.files.storage import default_storage
-from django.core.files.base import ContentFile
 from webob.response import Response
 
 from xblock.core import XBlock
@@ -39,6 +37,14 @@ class AudioBlock(AudioFields, StudioEditableXBlockMixin, StudioContainerXBlockMi
         """Handy helper for getting resources from our kit."""
         data = pkg_resources.resource_string(__name__, path)
         return data.decode("utf8")
+
+    def convert_time_to_seconds(self, time_str):
+        """Convert a time string in the format MM:SS to total seconds."""
+        try:
+            minutes, seconds = time_str.split(":")
+            return int(minutes) * 60 + int(seconds)
+        except ValueError:
+            return 0.0
 
 
     def studio_view(self, context):
@@ -100,13 +106,14 @@ class AudioBlock(AudioFields, StudioEditableXBlockMixin, StudioContainerXBlockMi
         Handle studio form submissions
         """
         data = request.POST
+        self.description = data.get('description', "")
         self.sources = data.get('sources')
         self.allow_audio_download = data.get('allow_audio_download') == 'true'
-        self.start_time = float(data.get('start_time', 0.0))
-        self.end_time = float(data.get('end_time', 0.0))
+        self.start_time = float(self.convert_time_to_seconds(data.get('start_time', '00:00')))
+        self.end_time = float(self.convert_time_to_seconds(data.get('end_time', '00:00')))
         self.embed_url = data.get('embed_url', '') if not data.get('sources', '') else ''
 
-        if 'transcript_file' in request.params:
+        if 'transcript_file' in request.params and hasattr(request.params['transcript_file'], 'file'):
             transcript_file = request.params['transcript_file']
             file_name = transcript_file.filename
             file_path = os.path.join(settings.MEDIA_ROOT, 'transcripts', file_name)
@@ -114,6 +121,8 @@ class AudioBlock(AudioFields, StudioEditableXBlockMixin, StudioContainerXBlockMi
             with open(file_path, 'wb') as f:
                 f.write(transcript_file.file.read())
             self.transcript_file = f'/media/transcripts/{file_name}'
+        else:
+            self.transcript_file = None
 
 
         return Response(json_body={'result': 'success'})

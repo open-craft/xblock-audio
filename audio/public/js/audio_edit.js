@@ -1,7 +1,14 @@
 function AudioBlockStudio(runtime, element) {
+    $(element).find('.save-button').click(function(event) {
+        event.preventDefault();
+        $(element).find('form').submit();
+    });
+
     $(element).find('form').submit(function(event) {
         event.preventDefault();
         var data = new FormData($(this).get(0));
+        var description = $(element).find('#description').val();
+        data.append('description', description);
         runtime.notify('save', {state: 'start'});
 
         $.ajax({

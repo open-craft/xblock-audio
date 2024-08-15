@@ -1,8 +1,10 @@
+{% if description %}
+    <p>{{ description }}</p>
+{% endif %}
 {% if embed_url %}
     <iframe src="{{ embed_url }}" width="100%" height="232" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
 {% else %}
   <div id="{{ audio_id }}" class="audio-xblock">
-    <p>{{description}}</p>
     <audio preload="metadata" controls="controls" data-start-time="{{ start_time }}" data-end-time="{{ end_time }}">
       Your browser does not support native <code>audio</code> capabilities!
       {% for source, type in sources %}

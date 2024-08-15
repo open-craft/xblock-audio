@@ -1,5 +1,10 @@
 <div class="wrapper-comp-settings is-active editor-with-buttons" id="settings-tab">
     <div class="tab-container">
+        <div class="field">
+            <label for="description">Description</label>
+            <textarea id="description" name="description">{{ self.description }}</textarea>
+            <p class="help">Add an optional description to display above the audio player.</p>
+        </div>
         <div class="radio-group">
             <label for="content_type">
                 <span class="bold-label">Select Audio Type:</span>
