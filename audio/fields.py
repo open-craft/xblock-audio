@@ -47,6 +47,12 @@ class AudioFields(object):
         scope=Scope.settings
     )
 
+    transcript_url = String(
+        help="Transcript file URL",
+        default=None,
+        scope=Scope.settings
+    )
+
     start_time = Float(
         help="Start time in seconds",
         default=0.0,
@@ -83,3 +89,5 @@ class AudioFields(object):
                         _scheme, _netloc, path, _params, _qs, _fragment = urlparse(source)
                         if path is None:
                             validation.add(ValidationMessage(ValidationMessage.ERROR, _(u"Invalid URL '") + source + _(u"' entered.")))
+        if data.transcript_file and data.transcript_url:
+            validation.add(ValidationMessage(ValidationMessage.ERROR, _(u"You must specify at most one transcript source!")))
