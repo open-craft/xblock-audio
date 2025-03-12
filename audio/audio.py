@@ -30,8 +30,14 @@ class AudioBlock(AudioFields, StudioEditableXBlockMixin, StudioContainerXBlockMi
     icon_class = 'other'
     loader = ResourceLoader(__name__)
 
-    editable_fields = ('sources', 'allow_audio_download', 'description', 'transcript_file', 'embed_url')
-
+    editable_fields = (
+        'sources',
+        'allow_audio_download',
+        'description',
+        'transcript_file',
+        'transcript_url',
+        'embed_url',
+    )
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
@@ -83,7 +89,7 @@ class AudioBlock(AudioFields, StudioEditableXBlockMixin, StudioContainerXBlockMi
                 'allow_audio_download': self.allow_audio_download,
                 'audio_download_url': audio_download_url,
                 'description': self.description,
-                'transcript_file': self.transcript_file,
+                'transcript_file': self.transcript_url or self.transcript_file,
                 'start_time': self.start_time,
                 'end_time': self.end_time,
                 'embed_url': self.embed_url
@@ -112,6 +118,7 @@ class AudioBlock(AudioFields, StudioEditableXBlockMixin, StudioContainerXBlockMi
         self.start_time = float(self.convert_time_to_seconds(data.get('start_time', '00:00')))
         self.end_time = float(self.convert_time_to_seconds(data.get('end_time', '00:00')))
         self.embed_url = data.get('embed_url', '') if not data.get('sources', '') else ''
+        self.transcript_url = data.get('transcript_url')
 
         if 'transcript_file' in request.params and hasattr(request.params['transcript_file'], 'file'):
             transcript_file = request.params['transcript_file']
@@ -123,6 +130,5 @@ class AudioBlock(AudioFields, StudioEditableXBlockMixin, StudioContainerXBlockMi
             self.transcript_file = f'/media/transcripts/{file_name}'
         else:
             self.transcript_file = None
-
 
         return Response(json_body={'result': 'success'})
