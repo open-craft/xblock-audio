@@ -42,6 +42,10 @@
   justify-content: center;
 }
 
+.mejs-controls {
+    display: inline-block;
+}
+
 .mejs-controls .mejs-button > button {
   background: url('/static/css/controls.svg') no-repeat;
 }
