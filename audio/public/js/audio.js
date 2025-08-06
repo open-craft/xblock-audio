@@ -5,20 +5,15 @@ function AudioBlock(runtime, element) {
         return;
     }
 
-    const startTime = parseFloat(audioElement.dataset.startTime) || 0;
-    const endTime = parseFloat(audioElement.dataset.endTime) || audioElement.duration;
+    // these default to 0.0 if unset
+    const startTime = parseFloat(audioElement.dataset.startTime);
+    const endTime = parseFloat(audioElement.dataset.endTime);
 
     $(audioElement).mediaelementplayer({
         features: ['playpause', 'progress', 'volume', 'tracks', 'fullscreen'],
         startLanguage: 'en',
         success: function(mediaElement, originalNode) {
             mediaElement.setCurrentTime(startTime);
-
-            Object.defineProperty(mediaElement, 'duration', {
-                get: function() {
-                    return endTime - startTime;
-                }
-            });
 
             mediaElement.addEventListener('timeupdate', function() {
                 if (endTime > 0 && mediaElement.currentTime >= endTime) {
@@ -29,7 +24,7 @@ function AudioBlock(runtime, element) {
             });
 
             mediaElement.addEventListener('play', function() {
-                if (mediaElement.currentTime < startTime || mediaElement.currentTime >= endTime) {
+                if (mediaElement.currentTime < startTime || (endTime > 0 && mediaElement.currentTime >= endTime)) {
                     mediaElement.setCurrentTime(startTime);
                 }
             });
@@ -47,10 +42,12 @@ function AudioBlock(runtime, element) {
             });
 
             mediaElement.addEventListener('timeupdate', function() {
-                const playedPercent = (mediaElement.currentTime - startTime) / (endTime - startTime);
-                const progressBar = $(element).find('.mejs-time-current');
-                if (progressBar.length) {
-                    progressBar.css('width', (playedPercent * 100) + '%');
+                if (endTime > 0) {
+                    const playedPercent = (mediaElement.currentTime - startTime) / (endTime - startTime);
+                    const progressBar = $(element).find('.mejs-time-current');
+                    if (progressBar.length) {
+                        progressBar.css('width', (playedPercent * 100) + '%');
+                    }
                 }
             });
         }
