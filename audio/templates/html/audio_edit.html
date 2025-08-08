@@ -25,8 +25,9 @@
         <div id="audio-tab" class="tabcontent" {% if not sources and embed_url %}style="display: none;"{% endif %}>
             <div class="field">
                 <label for="sources">Audio file URLs</label>
-                <textarea id="sources" name="sources">{{ sources }}</textarea>
-                <p class="help">Place each URL on a new line.</p>
+                <textarea id="sources" name="sources" placeholder="https://example.com/bird-calls.mp3
+https://example.com/bird-calls.ogg">{{ sources }}</textarea>
+                <p class="help">Enter the URL for the audio here. To improve compatibility with a range of browsers, you may wish to provide multiple versions of the same audio (for example, an MP3 version and an Ogg Vorbis version). If so, place each URL on a new line.</p>
             </div>
             <div class="field">
                 <label for="transcript-file">Audio transcript</label>
