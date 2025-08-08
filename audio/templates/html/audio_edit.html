@@ -1,79 +1,76 @@
 <div class="wrapper-comp-settings is-active editor-with-buttons" id="settings-tab">
-    <div class="tab-container">
+    <form class="studio-xblock-form tab-container">
         <div class="field">
             <label for="description">Description</label>
-            <textarea id="description" name="description">{{ self.description }}</textarea>
+            <textarea id="description" name="description">{{ description }}</textarea>
             <p class="help">Add an optional description to display above the audio player.</p>
         </div>
+
         <div class="radio-group">
             <label for="content_type">
                 <span class="bold-label">Select Audio Type:</span>
             </label>
             <div class="radio-container">
                 <label>
-                    <input type="radio" name="content_type" value="audio" onclick="showContent('audioTab')" id="audioRadio" checked>
+                    <input type="radio" name="content_type" value="audio" onclick="audioSwitchType('audio-tab')" id="audio-radio" {% if sources or not embed_url %}checked{% endif %}>
                     Audio file
                 </label>
                 <label>
-                    <input type="radio" name="content_type" value="podcast" onclick="showContent('podcastTab')" id="podcastRadio">
+                    <input type="radio" name="content_type" value="podcast" onclick="audioSwitchType('podcast-tab')" id="podcast-radio" {% if not sources and embed_url %}checked{% endif %}>
                     Podcasts
                 </label>
             </div>
         </div>
-    
-        <div id="audioTab" class="tabcontent">
-            <form class="studio-xblock-form">
-                <div class="field">
-                    <label for="sources">Audio file URLs</label>
-                    <textarea id="sources" name="sources" {% if self.embed_url %}disabled{% endif %}>{{ self.sources }}</textarea>
-                    <p class="help">Place each URL on a new line.</p>
-                </div>
-                <div class="field">
-                    <label for="transcript_file">Audio transcript</label>
-                    <input type="file" id="transcript_file" name="transcript_file" />
-                    <p class="help">Only WebVTT format is supported.</p>
-                </div>
-                <div class="field">
-                    <label for="transcript_url">Audio transcript URL</label>
-                    <input type="text" id="transcript_url" name="transcript_url" {% if self.transcript_url %}value="{{ self.transcript_url }}"{% endif %} />
-                    <p class="help">Only WebVTT format is supported.</p>
-                </div>
-                <div class="field">
-                    <label for="allow_audio_download">Allow audio download</label>
-                    <select id="allow_audio_download" name="allow_audio_download">
-                        <option value="true" {% if self.allow_audio_download %}selected{% endif %}>Yes</option>
-                        <option value="false" {% if not self.allow_audio_download %}selected{% endif %}>No</option>
-                    </select>
-                    <p class="help">You can allow students to download the source file of this audio.</p>
-                </div>
-                <div class="checkbox-container">
-                    <input type="checkbox" id="start_time_checkbox" name="start_time_checkbox" {% if self.start_time or self.end_time %}checked{% endif %}/>
-                    <label for="start_time_checkbox">Set start and end time</label>
-                </div>
 
-                <div class="time-fields" id="time_fields" {% if not self.start_time and not self.end_time %}style="display:none"{% endif %}>
-                    <div class="field">
-                        <label for="start_time">Start time</label>
-                        <input type="text" id="start_time" name="start_time" value="{{ self.start_time|default:"00:00" }}" />
-                    </div>
-                    <div class="field">
-                        <label for="end_time">End time</label>
-                        <input type="text" id="end_time" name="end_time" value="{{ self.end_time|default:"00:00" }}" />
-                    </div>
-                </div>
-            </form>
-        </div>
-    
-        <div id="podcastTab" class="tabcontent">
-            <form class="studio-xblock-form">
+        <div id="audio-tab" class="tabcontent" {% if not sources and embed_url %}style="display: none;"{% endif %}>
+            <div class="field">
+                <label for="sources">Audio file URLs</label>
+                <textarea id="sources" name="sources">{{ sources }}</textarea>
+                <p class="help">Place each URL on a new line.</p>
+            </div>
+            <div class="field">
+                <label for="transcript-file">Audio transcript</label>
+                <input type="file" id="transcript-file" name="transcript_file" />
+                <p class="help">Only WebVTT format is supported.</p>
+            </div>
+            <div class="field">
+                <label for="transcript-url">Audio transcript URL</label>
+                <input type="text" id="transcript-url" name="transcript_url" value="{{ transcript_url }}" />
+                <p class="help">Only WebVTT format is supported.</p>
+            </div>
+            <div class="field">
+                <label for="allow-audio-download">Allow audio download</label>
+                <select id="allow-audio-download" name="allow_audio_download">
+                    <option value="true" {% if allow_audio_download %}selected{% endif %}>Yes</option>
+                    <option value="false" {% if not allow_audio_download %}selected{% endif %}>No</option>
+                </select>
+                <p class="help">You can allow students to download the source file of this audio.</p>
+            </div>
+            <div class="checkbox-container">
+                <input type="checkbox" id="start-time-checkbox" name="start_time_checkbox" {% if start_time != '00:00' or end_time != '00:00' %}checked{% endif %}/>
+                <label for="start-time-checkbox">Set start and end time</label>
+            </div>
+
+            <div class="time-fields" id="time-fields" {% if start_time == '00:00' and end_time == '00:00' %}style="display:none"{% endif %}>
                 <div class="field">
-                    <label for="embed_url">Podcast embed URL</label>
-                    <textarea id="embed_url" name="embed_url" {% if self.sources %}disabled{% endif %}>{{ self.embed_url }}</textarea>
-                    <p class="help">Enter the embed URL for a third-party podcast (e.g., Spotify, SoundCloud).</p>
+                    <label for="start-time">Start time</label>
+                    <input type="text" id="start-time" name="start_time" value="{{ start_time }}" />
                 </div>
-            </form>
+                <div class="field">
+                    <label for="end-time">End time</label>
+                    <input type="text" id="end-time" name="end_time" value="{{ end_time }}" />
+                </div>
+            </div>
         </div>
-    </div>
+
+        <div id="podcast-tab" class="tabcontent" {% if sources or not embed_url %}style="display: none;"{% endif %}>
+            <div class="field">
+                <label for="embed-url">Podcast embed URL</label>
+                <textarea id="embed-url" name="embed_url">{{ embed_url }}</textarea>
+                <p class="help">Enter the embed URL for a third-party podcast (e.g., Spotify, SoundCloud).</p>
+            </div>
+        </div>
+    </form>
     <div class="xblock-actions">
         <ul>
           <li class="action-item hidden">

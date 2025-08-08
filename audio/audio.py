@@ -25,6 +25,14 @@ except ModuleNotFoundError:  # For compatibility with releases older than Quince
 
 log = logging.getLogger(__name__)
 
+
+def convert_seconds_to_time(seconds):
+    """Convert total seconds to the format MM:SS."""
+    # It's stored as a float in the xblock, but treated as an int.
+    seconds = int(seconds)
+    return f"{seconds // 60:02}:{seconds % 60:02}"
+
+
 @XBlock.needs('i18n')
 class AudioBlock(AudioFields, StudioEditableXBlockMixin, StudioContainerXBlockMixin, XBlock):
     icon_class = 'other'
@@ -52,15 +60,21 @@ class AudioBlock(AudioFields, StudioEditableXBlockMixin, StudioContainerXBlockMi
         except ValueError:
             return 0.0
 
-
     def studio_view(self, context):
         """
         View for editing the XBlock settings in Studio
         """
         html = self.loader.render_django_template(
             'templates/html/audio_edit.html', {
-                'self': self
-            })
+                'description': self.description,
+                'sources': self.sources,
+                'embed_url': self.embed_url,
+                'transcript_url': self.transcript_url,
+                'allow_audio_download': self.allow_audio_download,
+                'start_time': convert_seconds_to_time(self.start_time),
+                'end_time': convert_seconds_to_time(self.end_time),
+            }
+        )
 
         fragment = Fragment(html)
         fragment.add_css_url(self.runtime.local_resource_url(self, 'public/css/audio.css'))

@@ -7,8 +7,6 @@ function AudioBlockStudio(runtime, element) {
     $(element).find('form').submit(function(event) {
         event.preventDefault();
         var data = new FormData($(this).get(0));
-        var description = $(element).find('#description').val();
-        data.append('description', description);
         runtime.notify('save', {state: 'start'});
 
         $.ajax({
@@ -19,7 +17,6 @@ function AudioBlockStudio(runtime, element) {
             contentType: false,
             success: function(response) {
                 runtime.notify('save', {state: 'end'});
-                window.location.reload();
             }
         });
     });
@@ -30,53 +27,35 @@ function AudioBlockStudio(runtime, element) {
         }
     });
 
-    var sourcesField = document.getElementById('sources');
-    var embedUrlField = document.getElementById('embed_url');
-    var startTimeCheckbox = document.getElementById('start_time_checkbox');
-    var timeFields = document.getElementById('time_fields');
+    window.audioSwitchType = function(tab) {
+        if (tab === 'audio-tab') {
+            $('#audio-tab').show();
+            $('#podcast-tab').hide();
 
-    // Remove the existing openTab function and add the showContent function
-    window.showContent = function(contentType) {
-        var audioTab = document.getElementById('audioTab');
-        var podcastTab = document.getElementById('podcastTab');
+            // Reset podcast-tab fields when switching to audio type
+            $('#embed-url').val('');
+        } else if (tab === 'podcast-tab') {
+            $('#audio-tab').hide();
+            $('#podcast-tab').show();
 
-        if (contentType === 'audioTab') {
-            audioTab.style.display = 'block';
-            podcastTab.style.display = 'none';
-        } else if (contentType === 'podcastTab') {
-            podcastTab.style.display = 'block';
-            audioTab.style.display = 'none';
+            // Reset audio-tab fields when switching to podcast type
+            $('#start-time').val('00:00');
+            $('#end-time').val('00:00');
+            $('#sources').val('');
+            $('#transcript-file').val('');
+            $('#transcript-url').val('');
+            $('#allow-audio-download').val('true');
+            $('#start-time-checkbox').prop('checked', false);
         }
     }
 
-    // Initialize the "Audio files" content by default
-    showContent('audioTab');
-    document.getElementById("audioRadio").checked = true;
-
-
-    // Handle mutual exclusivity
-    sourcesField.addEventListener('input', function() {
-        if (sourcesField.value.trim() !== '') {
-            embedUrlField.disabled = true;
+    $('#start-time-checkbox').on('change', function() {
+        if ($('#start-time-checkbox').is(':checked')) {
+            $('#time-fields').show();
         } else {
-            embedUrlField.disabled = false;
-        }
-    });
-
-    embedUrlField.addEventListener('input', function() {
-        if (embedUrlField.value.trim() !== '') {
-            sourcesField.disabled = true;
-        } else {
-            sourcesField.disabled = false;
-        }
-    });
-
-    // Handle start time checkbox
-    startTimeCheckbox.addEventListener('change', function() {
-        if (startTimeCheckbox.checked) {
-            timeFields.style.display = "block";
-        } else {
-            timeFields.style.display = "none";
+            $('#time-fields').hide();
+            $('#start-time').val('00:00');
+            $('#end-time').val('00:00');
         }
     });
 }
