@@ -1,6 +1,7 @@
 .audio-xblock {
   display: block;
   margin-bottom: 4rem;
+  margin-top: 4rem;
 }
 
 .mejs-container {
@@ -60,6 +61,12 @@
 
 .mejs-time-total, .mejs-time-loaded, .mejs-time-current, .mejs-time-handle, .mejs-time-float {
   max-width: 100% !important;
+}
+
+.mejs-captions-selector label {
+    text-shadow: none;
+    margin-bottom: 0;
+    color: white;
 }
 
 .tab-container {
