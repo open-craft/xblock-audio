@@ -19,7 +19,7 @@
       {% endif %}
     </audio>
     {% if allow_audio_download and audio_download_url %}
-      <div class="audio-xblock-download"><a href="{{ audio_download_url }}">Download audio</a></div>
+      <div class="audio-xblock-download"><a href="{{ audio_download_url }}" target="_blank" rel="noopener" download>Download audio</a></div>
     {% endif %}
   </div>
 {% endif %}
