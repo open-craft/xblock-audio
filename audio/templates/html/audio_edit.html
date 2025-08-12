@@ -30,7 +30,16 @@ https://example.com/bird-calls.ogg">{{ sources }}</textarea>
                 <p class="help">Enter the URL for the audio here. To improve compatibility with a range of browsers, you may wish to provide multiple versions of the same audio (for example, an MP3 version and an Ogg Vorbis version). If so, place each URL on a new line.</p>
             </div>
             <div class="field">
-                <label for="transcript-file">Audio transcript</label>
+                <p class="help">If you wish to add a transcript below, please either upload a file or provide a URL (but not both).</p>
+                <label for="transcript-file">Audio transcript file</label>
+                {% if transcript_file_url %}
+                <div>
+                    <small>Currently:</small>
+                    <a href="{{ transcript_file_url }}">{{ transcript_file_name }}</a>
+                    <input type="checkbox" id="delete-transcript-file" name="delete_transcript_file" />
+                    <label for="delete-transcript-file">Delete</label>
+                </div>
+                {% endif %}
                 <input type="file" id="transcript-file" name="transcript_file" />
                 <p class="help">Only WebVTT format is supported.</p>
             </div>

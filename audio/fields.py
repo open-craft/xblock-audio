@@ -90,4 +90,4 @@ class AudioFields(object):
                         if path is None:
                             validation.add(ValidationMessage(ValidationMessage.ERROR, _(u"Invalid URL '") + source + _(u"' entered.")))
         if data.transcript_file and data.transcript_url:
-            validation.add(ValidationMessage(ValidationMessage.ERROR, _(u"You must specify at most one transcript source!")))
+            validation.add(ValidationMessage(ValidationMessage.ERROR, _(u"You may only specify a single transcript source (an uploaded file OR a url). Please remove one to continue.")))
