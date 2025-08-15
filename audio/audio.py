@@ -43,7 +43,6 @@ class AudioBlock(AudioFields, StudioEditableXBlockMixin, StudioContainerXBlockMi
 
     editable_fields = (
         'sources',
-        'allow_audio_download',
         'description',
         'transcript_file',
         'transcript_url',
@@ -84,7 +83,6 @@ class AudioBlock(AudioFields, StudioEditableXBlockMixin, StudioContainerXBlockMi
                 'transcript_url': self.transcript_url or "",
                 'transcript_file_url': self.runtime.handler_url(self, 'transcript_file_handler') if self.transcript_file else "",
                 'transcript_file_name': os.path.basename(self.transcript_file) if self.transcript_file else "",
-                'allow_audio_download': self.allow_audio_download,
                 'start_time': convert_seconds_to_time(self.start_time),
                 'end_time': convert_seconds_to_time(self.end_time),
             }
@@ -101,7 +99,6 @@ class AudioBlock(AudioFields, StudioEditableXBlockMixin, StudioContainerXBlockMi
         Player view, displayed to the student
         """
         sources = list(filter(None, self.sources.split('\n')) if self.sources else '')
-        audio_download_url = sources[0] if sources else None
 
         # Add the MIME type if we think we know it.
         annotated_sources = []
@@ -114,8 +111,6 @@ class AudioBlock(AudioFields, StudioEditableXBlockMixin, StudioContainerXBlockMi
             'templates/html/audio.html', {
                 'audio_id': self.audio_id,
                 'sources': annotated_sources,
-                'allow_audio_download': self.allow_audio_download,
-                'audio_download_url': audio_download_url,
                 'description': self.description,
                 'resolved_transcript_url': resolved_transcript_url,
                 'start_time': self.start_time,
@@ -142,7 +137,6 @@ class AudioBlock(AudioFields, StudioEditableXBlockMixin, StudioContainerXBlockMi
         data = request.POST
         self.description = data.get('description', "")
         self.sources = data.get('sources')
-        self.allow_audio_download = data.get('allow_audio_download') == 'true'
         self.start_time = float(self.convert_time_to_seconds(data.get('start_time', '00:00')))
         self.end_time = float(self.convert_time_to_seconds(data.get('end_time', '00:00')))
         self.embed_url = data.get('embed_url', '') if not data.get('sources', '') else ''

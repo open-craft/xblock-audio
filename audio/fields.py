@@ -27,13 +27,6 @@ class AudioFields(object):
         multiline_editor=True,
     )
 
-    allow_audio_download = Boolean(
-        help=_(u"Allow students to download the source audio file.  If enabled, the first source URL specified will be used."),
-        display_name=_(u"Audio Download Allowed"),
-        scope=Scope.settings,
-        default=True,
-    )
-
     description = String(
         display_name="Description",
         default="",

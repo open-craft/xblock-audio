@@ -44,7 +44,6 @@ function AudioBlockStudio(runtime, element) {
             $('#sources').val('');
             $('#transcript-file').val('');
             $('#transcript-url').val('');
-            $('#allow-audio-download').val('true');
             $('#start-time-checkbox').prop('checked', false);
         }
     }

@@ -48,14 +48,6 @@ https://example.com/bird-calls.ogg">{{ sources }}</textarea>
                 <input type="text" id="transcript-url" name="transcript_url" value="{{ transcript_url }}" />
                 <p class="help">Only WebVTT format is supported.</p>
             </div>
-            <div class="field">
-                <label for="allow-audio-download">Allow audio download</label>
-                <select id="allow-audio-download" name="allow_audio_download">
-                    <option value="true" {% if allow_audio_download %}selected{% endif %}>Yes</option>
-                    <option value="false" {% if not allow_audio_download %}selected{% endif %}>No</option>
-                </select>
-                <p class="help">You can allow students to download the source file of this audio.</p>
-            </div>
             <div class="checkbox-container">
                 <input type="checkbox" id="start-time-checkbox" name="start_time_checkbox" {% if start_time != '00:00' or end_time != '00:00' %}checked{% endif %}/>
                 <label for="start-time-checkbox">Set start and end time</label>
