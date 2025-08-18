@@ -3,8 +3,8 @@ from functools import partial
 import logging
 import pkg_resources
 import os
-from uuid import uuid4
 from django.conf import settings
+from django.utils.text import get_valid_filename
 from django.core.files import File
 from webob.response import Response
 
@@ -160,8 +160,9 @@ class AudioBlock(AudioFields, StudioEditableXBlockMixin, StudioContainerXBlockMi
             transcript_file = data['transcript_file']
 
             # generate a safe path for the transcript file
-            loc = self.location
-            file_path = f"{loc.org}/{loc.course}/{loc.block_type}/{loc.block_id}/{uuid4()}.vtt"
+            name = get_valid_filename(transcript_file.filename)
+            safe_usage_key = get_valid_filename(self.usage_key)
+            file_path = f"{safe_usage_key}/transcripts/{name}"
             storage.save(file_path, File(transcript_file.file))
             self.transcript_file = file_path
 
