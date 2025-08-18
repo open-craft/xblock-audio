@@ -1,6 +1,7 @@
 .audio-xblock {
   display: block;
   margin-bottom: 4rem;
+  margin-top: 4rem;
 }
 
 .mejs-container {
@@ -42,6 +43,10 @@
   justify-content: center;
 }
 
+.mejs-controls {
+    display: inline-block;
+}
+
 .mejs-controls .mejs-button > button {
   background: url('/static/css/controls.svg') no-repeat;
 }
@@ -58,6 +63,12 @@
   max-width: 100% !important;
 }
 
+.mejs-captions-selector label {
+    text-shadow: none;
+    margin-bottom: 0;
+    color: white;
+}
+
 .tab-container {
   width: 100%;
   padding: 20px;
@@ -67,10 +78,6 @@
   overflow-y: scroll;
   bottom: 0;
   top: 0;
-}
-
-.tabcontent {
-  display: none;
 }
 
 .studio-xblock-form {
