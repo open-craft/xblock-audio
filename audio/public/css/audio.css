@@ -156,3 +156,7 @@
   flex-direction: column;
   margin-top: 10px;
 }
+
+.audio-xblock-download {
+    margin-top: 1rem;
+}
