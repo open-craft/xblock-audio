@@ -28,7 +28,7 @@ class AudioFields(object):
     )
 
     allow_audio_download = Boolean(
-        help=_(u"Allow students to download the source audio file.  If enabled, the first source URL specified will be used."),
+        help=_(u"Provide a link to download the source audio file.  If enabled, the first source URL specified will be used."),
         display_name=_(u"Audio Download Allowed"),
         scope=Scope.settings,
         default=True,
