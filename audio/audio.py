@@ -151,15 +151,14 @@ class AudioBlock(AudioFields, StudioEditableXBlockMixin, StudioContainerXBlockMi
         storage = get_storage_backend()
         will_upload_transcript_file = 'transcript_file' in data and hasattr(data.get('transcript_file'), 'file')
 
-        if data.get("delete_transcript_file", "") == "on" or will_upload_transcript_file:
+        if will_upload_transcript_file:
+            # clean up any existing file first
             if self.transcript_file and storage.exists(self.transcript_file):
                 storage.delete(self.transcript_file)
             self.transcript_file = None
 
-        if will_upload_transcript_file:
+            # generate a safe path for the transcript file and save it
             transcript_file = data['transcript_file']
-
-            # generate a safe path for the transcript file
             name = get_valid_filename(transcript_file.filename)
             safe_usage_key = get_valid_filename(self.usage_key)
             file_path = f"{safe_usage_key}/transcripts/{name}"
