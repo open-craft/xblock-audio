@@ -27,6 +27,15 @@ function AudioBlockStudio(runtime, element) {
         }
     });
 
+    $(element).find('.remove-transcript-button').click(function(event) {
+        event.preventDefault();
+        $.ajax({
+            url: runtime.handlerUrl(element, 'remove_transcript'),
+            type: 'POST',
+        });
+        $('#current-transcript').remove();
+    });
+
     window.audioSwitchType = function(tab) {
         if (tab === 'audio-tab') {
             $('#audio-tab').show();

@@ -33,11 +33,10 @@ https://example.com/bird-calls.ogg">{{ sources }}</textarea>
                 <p class="help">If you wish to add a transcript below, please either upload a file or provide a URL (but not both).</p>
                 <label for="transcript-file">Audio transcript file</label>
                 {% if transcript_file_url %}
-                <div>
-                    <small>Currently:</small>
+                <div id="current-transcript">
+                    Currently saved:
                     <a href="{{ transcript_file_url }}">{{ transcript_file_name }}</a>
-                    <input type="checkbox" id="delete-transcript-file" name="delete_transcript_file" />
-                    <label for="delete-transcript-file">Delete</label>
+                    (<a href="#" class="button remove-transcript-button">Remove</a>)
                 </div>
                 {% endif %}
                 <input type="file" id="transcript-file" name="transcript_file" />
