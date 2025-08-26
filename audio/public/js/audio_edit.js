@@ -29,11 +29,9 @@ function AudioBlockStudio(runtime, element) {
 
     $(element).find('.remove-transcript-button').click(function(event) {
         event.preventDefault();
-        $.ajax({
-            url: runtime.handlerUrl(element, 'remove_transcript'),
-            type: 'POST',
-        });
+        $('#delete-transcript-file').prop("checked", true);
         $('#current-transcript').remove();
+
     });
 
     window.audioSwitchType = function(tab) {

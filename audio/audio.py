@@ -151,12 +151,12 @@ class AudioBlock(AudioFields, StudioEditableXBlockMixin, StudioContainerXBlockMi
         storage = get_storage_backend()
         will_upload_transcript_file = 'transcript_file' in data and hasattr(data.get('transcript_file'), 'file')
 
-        if will_upload_transcript_file:
-            # clean up any existing file first
+        if data.get("delete_transcript_file", "") == "on" or will_upload_transcript_file:
             if self.transcript_file and storage.exists(self.transcript_file):
                 storage.delete(self.transcript_file)
             self.transcript_file = None
 
+        if will_upload_transcript_file:
             # generate a safe path for the transcript file and save it
             transcript_file = data['transcript_file']
             name = get_valid_filename(transcript_file.filename)
@@ -184,15 +184,3 @@ class AudioBlock(AudioFields, StudioEditableXBlockMixin, StudioContainerXBlockMi
                 pass
 
         return Response("file not found", status_code=404)
-
-    @XBlock.handler
-    def remove_transcript(self, request, suffix=''):
-        """
-        Remove (delete) the transcript file from the block if any.
-        """
-        storage = get_storage_backend()
-        if self.transcript_file and storage.exists(self.transcript_file):
-            storage.delete(self.transcript_file)
-        self.transcript_file = None
-
-        return Response(json_body={'result': 'success'})
