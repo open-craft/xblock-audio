@@ -157,8 +157,9 @@ class AudioBlock(AudioFields, StudioEditableXBlockMixin, StudioContainerXBlockMi
             self.transcript_file = None
 
         if will_upload_transcript_file:
-            # generate a safe path for the transcript file and save it
             transcript_file = data['transcript_file']
+
+            # generate a safe path for the transcript file
             name = get_valid_filename(transcript_file.filename)
             safe_usage_key = get_valid_filename(self.usage_key)
             file_path = f"{safe_usage_key}/transcripts/{name}"
