@@ -31,7 +31,6 @@ function AudioBlockStudio(runtime, element) {
         event.preventDefault();
         $('#delete-transcript-file').prop("checked", true);
         $('#current-transcript').remove();
-
     });
 
     window.audioSwitchType = function(tab) {
