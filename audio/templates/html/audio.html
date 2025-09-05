@@ -5,6 +5,12 @@
     <iframe src="{{ embed_url }}" width="100%" height="232" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
 {% else %}
   <div id="{{ audio_id }}" class="audio-xblock">
+    {% if allow_audio_download and audio_download_url %}
+      <p class="audio-xblock-download">
+          <a href="{{ audio_download_url }}" target="_blank" rel="noopener" download>Download audio</a>
+          (Right-click or long-press to save; clicking may play instead)
+      </p>
+    {% endif %}
     <audio preload="metadata" controls="controls" data-start-time="{{ start_time }}" data-end-time="{{ end_time }}">
       Your browser does not support native <code>audio</code> capabilities!
       {% for source, type in sources %}
@@ -18,11 +24,5 @@
         <track kind="subtitles" src="{{ resolved_transcript_url }}" srclang="en" label="English" default/>
       {% endif %}
     </audio>
-    {% if allow_audio_download and audio_download_url %}
-      <p class="audio-xblock-download">
-          <a href="{{ audio_download_url }}" target="_blank" rel="noopener" download>Download audio</a>
-          (Right click or long press on the download link and select the "Save as" option to download. Clicking on the link might open it for playback in a tab.)
-      </p>
-    {% endif %}
   </div>
 {% endif %}

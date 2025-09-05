@@ -7,14 +7,22 @@
 .mejs-container {
   width: 100% !important;
   max-width: 100% !important;
+  margin-bottom: 90px;
 }
 
 .mejs-container .mejs-controls {
   position: relative !important;
 }
 
-.mejs-captions-layer .mejs-layer {
+.mejs-captions-layer {
   width: 100% !important;
+}
+
+.mejs-captions-layer .mejs-captions-position {
+  position: unset;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .mejs-captions-layer .mejs-captions-text {
@@ -22,25 +30,18 @@
   word-wrap: break-word;
   max-width: 40ch;
   background-color: rgba(255, 255, 255, 0.8);
-  padding: 10px;
+  padding: 0;
+  margin: 10px;
   font-size: 18px;
   line-height: 1.2;
   text-align: center;
   color: #000;
-  position: absolute;
-  transform: translateX(-50%);
-  top: 35px;
-  width: 100%;
-  left: 32rem;
-}
-
-.mejs-captions-position {
-  bottom: 50px;
-  left: 50% !important;
-  transform: translateX(-50%);
-  width: 100%;
-  display: flex;
-  justify-content: center;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .mejs-controls {
