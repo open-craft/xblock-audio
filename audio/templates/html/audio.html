@@ -11,6 +11,9 @@
           (Right-click or long-press to save; clicking may play instead)
       </p>
     {% endif %}
+    {% if alt_transcript_url %}
+        <p><a href="{{ alt_transcript_url }}" target="_blank" rel="noopener">Download transcript</a></p>
+    {% endif %}
     <audio preload="metadata" controls="controls" data-start-time="{{ start_time }}" data-end-time="{{ end_time }}">
       Your browser does not support native <code>audio</code> capabilities!
       {% for source, type in sources %}
