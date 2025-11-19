@@ -47,9 +47,9 @@ class AudioFields(object):
         scope=Scope.settings
     )
 
-    alt_transcript_file = String(
-        help="Alternate transcript file path",
-        default=None,
+    alt_transcript_url = String(
+        help="Alternate transcript file url. A link to this url will be displayed, labelled 'Download transcript'.",
+        default="",
         scope=Scope.settings
     )
 

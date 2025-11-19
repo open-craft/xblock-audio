@@ -84,8 +84,7 @@ class AudioBlock(AudioFields, StudioEditableXBlockMixin, StudioContainerXBlockMi
                 'transcript_url': self.transcript_url or "",
                 'transcript_file_url': self.runtime.handler_url(self, 'transcript_file_handler') if self.transcript_file else "",
                 'transcript_file_name': os.path.basename(self.transcript_file) if self.transcript_file else "",
-                'alt_transcript_file_url': self.runtime.handler_url(self, 'alt_transcript_file_handler') if self.alt_transcript_file else "",
-                'alt_transcript_file_name': os.path.basename(self.alt_transcript_file) if self.alt_transcript_file else "",
+                'alt_transcript_url': self.alt_transcript_url,
                 'allow_audio_download': self.allow_audio_download,
                 'start_time': convert_seconds_to_time(self.start_time),
                 'end_time': convert_seconds_to_time(self.end_time),
@@ -120,7 +119,7 @@ class AudioBlock(AudioFields, StudioEditableXBlockMixin, StudioContainerXBlockMi
                 'audio_download_url': audio_download_url,
                 'description': self.description,
                 'resolved_transcript_url': resolved_transcript_url,
-                'alt_transcript_url': self.runtime.handler_url(self, 'alt_transcript_file_handler') if self.alt_transcript_file else "",
+                'alt_transcript_url': self.alt_transcript_url,
                 'start_time': self.start_time,
                 'end_time': self.end_time,
                 'embed_url': self.embed_url
@@ -150,6 +149,7 @@ class AudioBlock(AudioFields, StudioEditableXBlockMixin, StudioContainerXBlockMi
         self.end_time = float(self.convert_time_to_seconds(data.get('end_time', '00:00')))
         self.embed_url = data.get('embed_url', '') if not data.get('sources', '') else ''
         self.transcript_url = data.get('transcript_url')
+        self.alt_transcript_url = data.get('alt_transcript_url')
 
         storage = get_storage_backend()
         will_upload_transcript_file = 'transcript_file' in data and hasattr(data.get('transcript_file'), 'file')
@@ -169,23 +169,6 @@ class AudioBlock(AudioFields, StudioEditableXBlockMixin, StudioContainerXBlockMi
             storage.save(file_path, File(transcript_file.file))
             self.transcript_file = file_path
 
-        will_upload_alt_transcript_file = 'alt_transcript_file' in data and hasattr(data.get('alt_transcript_file'), 'file')
-
-        if data.get("delete_alt_transcript_file", "") == "on" or will_upload_alt_transcript_file:
-            if self.alt_transcript_file and storage.exists(self.alt_transcript_file):
-                storage.delete(self.alt_transcript_file)
-            self.alt_transcript_file = None
-
-        if will_upload_alt_transcript_file:
-            alt_transcript_file = data['alt_transcript_file']
-
-            # generate a safe path for the alt_transcript file
-            name = get_valid_filename(alt_transcript_file.filename)
-            safe_usage_key = get_valid_filename(self.usage_key)
-            file_path = f"{safe_usage_key}/alt_transcripts/{name}"
-            storage.save(file_path, File(alt_transcript_file.file))
-            self.alt_transcript_file = file_path
-
         return Response(json_body={'result': 'success'})
 
     @XBlock.handler
@@ -199,24 +182,6 @@ class AudioBlock(AudioFields, StudioEditableXBlockMixin, StudioContainerXBlockMi
                 return Response(
                     app_iter=iter(partial(storage.open(path).read, BLOCK_SIZE), b""),
                     content_type='text/vtt',
-                    content_disposition=f"attachment; filename*=UTF-8''{os.path.basename(path)}",
-                )
-            except OSError:
-                pass
-
-        return Response("file not found", status_code=404)
-
-    @XBlock.handler
-    def alt_transcript_file_handler(self, request, suffix=''):
-        BLOCK_SIZE = 2 ** 10 * 8  # 8kb
-        storage = get_storage_backend()
-        path = self.alt_transcript_file
-
-        if path:
-            try:
-                return Response(
-                    app_iter=iter(partial(storage.open(path).read, BLOCK_SIZE), b""),
-                    content_type='application/octet-stream',
                     content_disposition=f"attachment; filename*=UTF-8''{os.path.basename(path)}",
                 )
             except OSError:
