@@ -45,8 +45,7 @@ function AudioBlockStudio(runtime, element) {
             $('#transcript-file').val('');
             $('#delete-transcript-file').prop('checked', false);
             $('#transcript-url').val('');
-            $('#alt-transcript-file').val('');
-            $('#delete-alt-transcript-file').prop('checked', false);
+            $('#alt-transcript-url').val('');
             $('#allow-audio-download').val('true');
             $('#start-time-checkbox').prop('checked', false);
         }

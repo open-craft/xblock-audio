@@ -57,17 +57,9 @@ https://example.com/bird-calls.ogg">{{ sources }}</textarea>
                 <p class="help">You can provide a link for students to easily download the source file of this audio. If enabled, the first source URL will be used. Please note that even if this is disabled, students can still technically download the audio by inspecting the audio player in their browser.</p>
             </div>
             <div class="field">
-                <label for="alt-transcript-file">Alternate downloadable transcript file</label>
-                {% if alt_transcript_file_url %}
-                <div>
-                    <small>Currently:</small>
-                    <a href="{{ alt_transcript_file_url }}">{{ alt_transcript_file_name }}</a>
-                    <input type="checkbox" id="delete-alt-transcript-file" name="delete_alt_transcript_file" />
-                    <label for="delete-alt-transcript-file">Delete</label>
-                </div>
-                {% endif %}
-                <input type="file" id="alt-transcript-file" name="alt_transcript_file" />
-                <p class="help">Use this to upload a transcript in a format other than WebVTT. It won't appear as captions - only a download link will be provided.</p>
+                <label for="alt-transcript-url">Alternate downloadable transcript url</label>
+                <input type="text" id="alt-transcript-url" name="alt_transcript_url" value="{{ alt_transcript_url }}" />
+                <p class="help">Use this to link to a transcript in a format other than WebVTT. It won't appear as captions - only a download link will be provided.</p>
             </div>
             <div class="checkbox-container">
                 <input type="checkbox" id="start-time-checkbox" name="start_time_checkbox" {% if start_time != '00:00' or end_time != '00:00' %}checked{% endif %}/>
