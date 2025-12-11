@@ -22,10 +22,3 @@ You can enable the XBlock in Studio through `Advanced Settings`.
 1. From the main page of a specific course, navigate to `Settings -> Advanced Settings` from the top menu.
 2. Check for the `advanced_modules` policy key, and add `"audio"` to the policy value list.
 3. Click the "Save changes" button.
-
-## Configuration
-
-Transcript files will be uploaded to the default Django storage.
-If you wish to customise where the transcript files are uploaded,
-set a custom storage config in the [STORAGES](https://docs.djangoproject.com/en/5.2/ref/settings/#storages) setting,
-with the key `xblock_audio_storage`.
