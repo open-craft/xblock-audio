@@ -23,8 +23,8 @@
           <source src="{{ source }}" type="{{ type }}" />
         {% endif %}
       {% endfor %}
-      {% if resolved_transcript_url %}
-        <track kind="subtitles" src="{{ resolved_transcript_url }}" srclang="en" label="English" default/>
+      {% if transcript_url %}
+        <track kind="subtitles" src="{{ transcript_url }}" srclang="en" label="English" default/>
       {% endif %}
     </audio>
   </div>

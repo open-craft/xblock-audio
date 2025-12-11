@@ -41,12 +41,6 @@ class AudioFields(object):
         help="Description text to be shown before the player."
     )
 
-    transcript_file = String(
-        help="Transcript file path",
-        default=None,
-        scope=Scope.settings
-    )
-
     alt_transcript_url = String(
         help="Alternate transcript file url. A link to this url will be displayed, labelled 'Download transcript'.",
         default="",
@@ -95,5 +89,3 @@ class AudioFields(object):
                         _scheme, _netloc, path, _params, _qs, _fragment = urlparse(source)
                         if path is None:
                             validation.add(ValidationMessage(ValidationMessage.ERROR, _(u"Invalid URL '") + source + _(u"' entered.")))
-        if data.transcript_file and data.transcript_url:
-            validation.add(ValidationMessage(ValidationMessage.ERROR, _(u"You may only specify a single transcript source (an uploaded file OR a url). Please remove one to continue.")))

@@ -42,8 +42,6 @@ function AudioBlockStudio(runtime, element) {
             $('#start-time').val('00:00');
             $('#end-time').val('00:00');
             $('#sources').val('');
-            $('#transcript-file').val('');
-            $('#delete-transcript-file').prop('checked', false);
             $('#transcript-url').val('');
             $('#alt-transcript-url').val('');
             $('#allow-audio-download').val('true');

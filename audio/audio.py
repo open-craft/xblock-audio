@@ -1,18 +1,14 @@
 # -*- coding: utf-8 -*-
-from functools import partial
 import logging
 import pkg_resources
-import os
 from django.conf import settings
-from django.utils.text import get_valid_filename
-from django.core.files import File
 from webob.response import Response
 
 from xblock.core import XBlock
 from xblock.fragment import Fragment
 
 from .fields import AudioFields
-from .utils import get_path_mimetype, get_storage_backend
+from .utils import get_path_mimetype
 
 try:
     from xblock.utils.studio_editable import StudioEditableXBlockMixin, StudioContainerXBlockMixin
@@ -45,7 +41,6 @@ class AudioBlock(AudioFields, StudioEditableXBlockMixin, StudioContainerXBlockMi
         'sources',
         'allow_audio_download',
         'description',
-        'transcript_file',
         'transcript_url',
         'embed_url',
     )
@@ -63,15 +58,6 @@ class AudioBlock(AudioFields, StudioEditableXBlockMixin, StudioContainerXBlockMi
         except ValueError:
             return 0.0
 
-    def get_resolved_transcript_url(self):
-        """
-        Return the transcript url to be used (if present) for the xblock.
-        """
-        if self.transcript_url:
-            return self.transcript_url
-        elif self.transcript_file:
-            return self.runtime.handler_url(self, 'transcript_file_handler')
-
     def studio_view(self, context):
         """
         View for editing the XBlock settings in Studio
@@ -82,8 +68,6 @@ class AudioBlock(AudioFields, StudioEditableXBlockMixin, StudioContainerXBlockMi
                 'sources': self.sources,
                 'embed_url': self.embed_url,
                 'transcript_url': self.transcript_url or "",
-                'transcript_file_url': self.runtime.handler_url(self, 'transcript_file_handler') if self.transcript_file else "",
-                'transcript_file_name': os.path.basename(self.transcript_file) if self.transcript_file else "",
                 'alt_transcript_url': self.alt_transcript_url,
                 'allow_audio_download': self.allow_audio_download,
                 'start_time': convert_seconds_to_time(self.start_time),
@@ -110,7 +94,6 @@ class AudioBlock(AudioFields, StudioEditableXBlockMixin, StudioContainerXBlockMi
             type = get_path_mimetype(source)
             annotated_sources.append((source, type))
 
-        resolved_transcript_url = self.get_resolved_transcript_url()
         html = self.loader.render_django_template(
             'templates/html/audio.html', {
                 'audio_id': self.audio_id,
@@ -118,7 +101,7 @@ class AudioBlock(AudioFields, StudioEditableXBlockMixin, StudioContainerXBlockMi
                 'allow_audio_download': self.allow_audio_download,
                 'audio_download_url': audio_download_url,
                 'description': self.description,
-                'resolved_transcript_url': resolved_transcript_url,
+                'transcript_url': self.transcript_url,
                 'alt_transcript_url': self.alt_transcript_url,
                 'start_time': self.start_time,
                 'end_time': self.end_time,
@@ -151,40 +134,4 @@ class AudioBlock(AudioFields, StudioEditableXBlockMixin, StudioContainerXBlockMi
         self.transcript_url = data.get('transcript_url')
         self.alt_transcript_url = data.get('alt_transcript_url')
 
-        storage = get_storage_backend()
-        will_upload_transcript_file = 'transcript_file' in data and hasattr(data.get('transcript_file'), 'file')
-
-        if data.get("delete_transcript_file", "") == "on" or will_upload_transcript_file:
-            if self.transcript_file and storage.exists(self.transcript_file):
-                storage.delete(self.transcript_file)
-            self.transcript_file = None
-
-        if will_upload_transcript_file:
-            transcript_file = data['transcript_file']
-
-            # generate a safe path for the transcript file
-            name = get_valid_filename(transcript_file.filename)
-            safe_usage_key = get_valid_filename(self.usage_key)
-            file_path = f"{safe_usage_key}/transcripts/{name}"
-            storage.save(file_path, File(transcript_file.file))
-            self.transcript_file = file_path
-
         return Response(json_body={'result': 'success'})
-
-    @XBlock.handler
-    def transcript_file_handler(self, request, suffix=''):
-        BLOCK_SIZE = 2 ** 10 * 8  # 8kb
-        storage = get_storage_backend()
-        path = self.transcript_file
-
-        if path:
-            try:
-                return Response(
-                    app_iter=iter(partial(storage.open(path).read, BLOCK_SIZE), b""),
-                    content_type='text/vtt',
-                    content_disposition=f"attachment; filename*=UTF-8''{os.path.basename(path)}",
-                )
-            except OSError:
-                pass
-
-        return Response("file not found", status_code=404)
