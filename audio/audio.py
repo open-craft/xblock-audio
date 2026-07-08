@@ -81,6 +81,22 @@ class AudioBlock(AudioFields, StudioEditableXBlockMixin, StudioContainerXBlockMi
         fragment.initialize_js('AudioBlockStudio')
         return fragment
 
+    def index_dictionary(self):
+        """
+        Return dictionary prepared with block content and type for indexing.
+        """
+        xblock_body = super().index_dictionary()
+        index_body = {
+            "display_name": self.display_name,
+            "description": self.description or "",
+        }
+        if "content" in xblock_body:
+            xblock_body["content"].update(index_body)
+        else:
+            xblock_body["content"] = index_body
+        xblock_body["content_type"] = "Audio"
+        return xblock_body
+
     def student_view(self, context):
         """
         Player view, displayed to the student
