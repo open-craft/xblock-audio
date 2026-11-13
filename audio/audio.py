@@ -97,6 +97,9 @@ class AudioBlock(AudioFields, StudioEditableXBlockMixin, StudioContainerXBlockMi
         xblock_body["content_type"] = "Audio"
         return xblock_body
 
+    # Alias needed for client's "Data Bricks" indexer project.
+    student_view_data = index_dictionary
+
     def student_view(self, context):
         """
         Player view, displayed to the student
